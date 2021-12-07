@@ -1,0 +1,61 @@
+﻿@model tutorial.Models.AwarieGm3
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>AwarieGm3</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Sekcja" class="control-label"></label>
+                <input asp-for="Sekcja" class="form-control" />
+                <span asp-validation-for="Sekcja" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stacja" class="control-label"></label>
+                <input asp-for="Stacja" class="form-control" />
+                <span asp-validation-for="Stacja" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Opis" class="control-label"></label>
+                <input asp-for="Opis" class="form-control" />
+                <span asp-validation-for="Opis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Komentarz" class="control-label"></label>
+                <input asp-for="Komentarz" class="form-control" />
+                <span asp-validation-for="Komentarz" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Min" class="control-label"></label>
+                <input asp-for="Min" class="form-control" />
+                <span asp-validation-for="Min" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CzasStart" class="control-label"></label>
+                <input asp-for="CzasStart" class="form-control" />
+                <span asp-validation-for="CzasStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CzasStop" class="control-label"></label>
+                <input asp-for="CzasStop" class="form-control" />
+                <span asp-validation-for="CzasStop" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

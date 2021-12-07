@@ -1,0 +1,64 @@
+﻿@model IEnumerable<tutorial.Models.TopDowntimeModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div>
+    <form asp-controller="AwarieGM3" asp-action="DisplayTop" asp-route-id="search">
+        Od: <input name="start" new { class="datefield" , type="date" } />
+        Do: <input name="stop" new { class="datefield" , type="date" }" />
+        Sekcja: <input id="asp" name="asp" new { class="button" , type="text" }" />
+        <input type="submit" value="Filter" />
+    </form>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sekcja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stacja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tag)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMinutes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(item => item.TotalMinutes))
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sekcja)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stacja)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+
+        </tr>
+        }
+
+    </tbody>
+</table>

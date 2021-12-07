@@ -1,0 +1,80 @@
+﻿@model IEnumerable<tutorial.Models.AwarieGm3>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div>
+    <form asp-controller="AwarieGM3" asp-action="Display" asp-route-id="search">
+        Od: <input name="start" new { class="datefield" , type="date" } />
+        Do: <input name="stop" new { class="datefield" , type="date" }" />
+        Sekcja: <input id="asp" name="asp" new { class="button" , type="text" }" />
+        <input type="submit" value="Filter" />
+    </form>
+</div>
+
+
+@*<a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Display" asp-route-id="WSZYSTKIE">WYŚWIETLANIE</a>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sekcja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stacja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Komentarz)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Min)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CzasStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CzasStop)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(item => item.CzasStart))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sekcja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stacja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Komentarz)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Min)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStop)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
