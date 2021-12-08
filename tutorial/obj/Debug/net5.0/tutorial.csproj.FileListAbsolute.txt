@@ -1339,3 +1339,4 @@ C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\Display.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\AspNet.ScriptManager.jQuery.UI.Combined.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\DisplayTop.cshtml.g.cs
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\DetailsTops.cshtml.g.cs

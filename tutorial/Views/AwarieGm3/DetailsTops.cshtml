@@ -1,0 +1,72 @@
+﻿@model IEnumerable<tutorial.Models.AwarieGm3>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sekcja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stacja)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Komentarz)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Min)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CzasStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CzasStop)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(item => item.CzasStart))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sekcja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stacja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Komentarz)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Min)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStop)
+                </td>
+                @*<td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                </td>*@
+            </tr>
+        }
+
+    </tbody>
+</table>
+<div>
+    <a href="" class="go_back"> Back </a>       
+</div>

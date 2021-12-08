@@ -34,43 +34,25 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <h3 class="text-light flex-grow-1">Aplikacja GM3</h3>
-                <a class="navbar-brand text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="">WSZYSTKIE</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                
+                @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M1">M1</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M2">M2</a>
-                        </li>
+                    <ul class="navbar-nav mr-auto">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M3A">M3A</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M3B">M3B</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M4">M4</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M5">M5</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="Display" asp-route-id="WSZYSTKIE">WYŚWIETLANIE</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="AwarieGm3" asp-action="DisplayTop" asp-route-id="WSZYSTKIE">Top awarie</a>
-                        </li>
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="">BIEŻĄCE AWARIE</a>
+                        
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Display" asp-route-id="WSZYSTKIE">WYŚWIETLANIE</a>
+   
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="DisplayTop" asp-route-id="WSZYSTKIE">TOP</a>
+
 
                     </ul>
-                    <p class="nav navbar-text text-light">Użytkownik: @User.Identity.Name</p>
+                        <p class="nav navbar-text text-light">Użytkownik: @User.Identity.Name</p>
 
-                </div>
+</div>
             </div>
         </nav>
     </header>
@@ -92,7 +74,14 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-
+    <script type="text/javascript">
+        $(function () {
+            $('.go_back').click(function (e) {
+                e.preventDefault();
+                history.go(-1);
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -5,9 +5,47 @@
 }
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light btn-group-sm border-bottom box-shadow mb-3" style="background-color: #e3f2fd;">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <a asp-action="Create">Create New</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="">WSZYSTKIE</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M0">M0</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M1">M1</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M2">M2</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M3A">M3A</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M3B">M3B</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M4">M4</a>
+        <a class="nav-brand text-body" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="M5">M5</a>
+
+
+        @*<form asp-controller="AwarieGM3" asp-action="Display" asp-route-id="search">
+                Od: <input name="start" new { class="datefield" , type="date" } />
+                <input type="submit" value="Filter" />
+            </form>*@
+    </div>
+</nav>
+
+@*<div class="row">
+    <div class="col-md-2">
+        <input type="radio" value="Male" id="Gender" name="Gender" />Izm<br />
+    </div>
+    <div class="col-md-2">
+        <input type="radio" value="Female" id="Gender" name="Gender" />IIzm<br />
+    </div>
+    <div class="col-md-2">
+        <input type="radio" value="Unspecified" id="Gender" name="Gender" />IIIzm<br />
+    </div>
+</div>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -36,35 +74,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.OrderBy(item => item.CzasStart)) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sekcja)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stacja)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Opis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Komentarz)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Min)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CzasStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CzasStop)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.OrderBy(item => item.CzasStart))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sekcja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stacja)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Komentarz)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Min)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CzasStop)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using tutorial.Models;
 
+
 namespace tutorial.Controllers
 {
     public class AwarieGm3Controller : Controller
@@ -28,16 +29,29 @@ namespace tutorial.Controllers
             var awarieGm3 = from m in _context.AwarieGm3s
                             select m;
 
+            DateTime now = DateTime.Now;
+            var timeToadd = 0;
+
+            timeToadd = -1 * now.Hour %8 - 2;
+            if (timeToadd <= -8)
+                timeToadd += 8;
+
+
+
             if (!String.IsNullOrEmpty(id))
             {
                 awarieGm3 = awarieGm3
-                               .Where(s => s.CzasStart >= DateTime.Now.AddHours(-8))
+                               .Where(s =>
+                                           s.CzasStart >= DateTime.Now.AddHours(timeToadd)
+                                           || s.CzasStop >= DateTime.Now.AddHours(timeToadd))
                                 .Where(s => s.Sekcja.Contains(id));
             }
             else
             {
                 awarieGm3 = awarieGm3
-                                .Where(s => s.CzasStart >= DateTime.Now.AddHours(-8));
+                                .Where(s =>
+                                           s.CzasStart >= DateTime.Now.AddHours(timeToadd)
+                                           || s.CzasStop >= DateTime.Now.AddHours(timeToadd));
 
             }
             return View(await awarieGm3.ToListAsync());
@@ -47,15 +61,16 @@ namespace tutorial.Controllers
 
         public async Task<IActionResult> Display(string id, DateTime start, DateTime stop, string asp)//, DateTime start, DateTime stop
         {
-            var awarieGm3 = from m in _context.AwarieGm3s
+            var awarieGm3 =  from m in _context.AwarieGm3s
                             select m;
 
-            if ((start == stop) && (start.Year < 2021))
-            {
-                ViewBag.Message = "Podaj poprawny przedział czasu!";
+            if (start.Year < 2021)
                 start = DateTime.Now.AddDays(-1).Date;
-                stop = DateTime.Now.AddDays(1).Date;
-            }             
+            if (stop.Year < 2021)
+                stop = DateTime.Now.AddDays(0).Date;
+
+            start = start.AddHours(6);
+            stop = stop.AddHours(6);
 
             if (!String.IsNullOrEmpty(asp) && !id.Contains("WSZYSTKIE") && id.Contains("search"))
             {
@@ -142,14 +157,10 @@ namespace tutorial.Controllers
             DateTime? dt = DateTime.Now;
             TimeSpan? interval = (dt - awarieGm3.CzasStop);
 
-            if (interval.Value.TotalHours > 8)
+            if (interval.Value.TotalHours > 24)
             {
-                return NotFound("Nie możesz edytować awarii, która była powyżej 8h temu!");
+                return NotFound("Nie możesz edytować awarii, która była powyżej 24h temu!");
             }
-
-
-
-
 
             return View(awarieGm3);
         }
@@ -244,10 +255,7 @@ namespace tutorial.Controllers
             }
 
             return View(await awarieGm3.ToListAsync());
-
-
         }
-
 
 
         //  [ChildActionOnly]
@@ -256,13 +264,13 @@ namespace tutorial.Controllers
             var awarieGm3 = from m in _context.AwarieGm3s
                             select m;
 
-            if ((start == stop) && (start.Year < 2021))
-            {
-                ViewBag.Message = "Podaj poprawny przedział czasu!";
+            if (start.Year < 2021)
                 start = DateTime.Now.AddDays(-1).Date;
-                stop = DateTime.Now.AddDays(1).Date;
-            }
+            if (stop.Year < 2021)
+                stop = DateTime.Now.AddDays(0).Date;
 
+            start = start.AddHours(6);
+            stop = stop.AddHours(6);
             if (!String.IsNullOrEmpty(asp) && !id.Contains("WSZYSTKIE") && id.Contains("search"))
             {
                 awarieGm3 = awarieGm3
@@ -283,64 +291,90 @@ namespace tutorial.Controllers
                                 .Where(s => s.CzasStart >= start && s.CzasStart <= stop);
             }
 
-            
+            var totalMinutesModel = new List<TopDowntimeModel>();
 
-            var totalMinutesModel = new List<TopDowntimeModel>( 1000 );
-            //{
-            //    //Tag = queryCustomersByCity.Select(x => x.Tag).ToList(),
-            //    //Count = queryCustomersByCity.Select(x => x.Count).ToList(),
-            //    //MinutesList = queryCustomersByCity.Select(x => x.TotalMinutes).ToList(),
-            //};
-
-            //var awarieGm3 = from m in _context.AwarieGm3s
-            //                select m;
-
-            var queryCustomersByCity =
-                from cust in awarieGm3.AsEnumerable()//_context.AwarieGm3s.AsEnumerable()
-                where cust.Sekcja.ToUpper().Contains("M0")
-                group cust by cust.Opis into g
+            var queryByOccurence =
+                from query in awarieGm3.AsEnumerable()//_context.AwarieGm3s.AsEnumerable()
+                                                      //   where cust.Sekcja.ToUpper().Contains("M0")
+                group query by new
+                {
+                    query.Sekcja,
+                    query.Stacja,
+                    query.Opis,
+                } into g
                 let list = g.ToList()
                 select new
                 {
-                    Sekcja = list.Select(x => x.Sekcja),
-                    Stacja = list.Select(x => x.Stacja),
-                    Tag = g.Key,
+                    Ids = list.Select(x => x.Id).ToList(),
+                    Sekcja = g.Key.Sekcja,
+                    Stacja = g.Key.Stacja,
+                    Tag = g.Key.Opis,
                     Count = list.Count,
-                    TotalMinutes = list.Select(x => {
+                    TotalMinutes = list.Select(x =>
+                    {
 
                         var minuty = 0;
                         if (Int32.TryParse(x.Min, out minuty))
                             return minuty;
                         else
                             return 0;
-                    }).Sum()                   
-                 //   ChargeSum = list.AsEnumerable().Sum(g => Convert.ToInt32(g.Min))   // Int32.Parse(x.Min))
+                    }).Sum()
                 };
 
-
-            foreach (var item in queryCustomersByCity)
+            
+            foreach (var item in queryByOccurence)
             {
                 TopDowntimeModel Model = new TopDowntimeModel();
-
-                Model.Sekcja = item.Sekcja.FirstOrDefault();
-                Model.Stacja = item.Stacja.FirstOrDefault();
-                Model.Tag = item.Tag; 
+                Model.Ids = item.Ids.ToList();
+                Model.Sekcja = item.Sekcja;
+                Model.Stacja = item.Stacja;
+                Model.Opis = item.Tag;
                 Model.TotalMinutes = item.TotalMinutes;
-                Model.Count = item.Count;
+                Model.LiczbaWystapien = item.Count;
 
                 totalMinutesModel.Add(Model);
-
-                //totalMinutesModel[i].Tag = item.Tag;
-                //totalMinutesModel[i].TotalMinutes = item.TotalMinutes;
-                //totalMinutesModel[i].Count = item.Count;
-                //i++;
             }
 
-            // totalMinutesModel = queryCustomersByCity.ToList();
-
-            //  statsModel.TotalAmount = _context.AwarieGm3s.//.Sum(o => o.Amount);  where m.Stacja != "bob" 
             return View(totalMinutesModel);
-           // return View(await awarieGm3.ToListAsync());
+            // return View(await awarieGm3.ToListAsync());
+        }
+
+        public async Task<IActionResult> DetailsTops(string id)
+        {
+            if (id == null || !id.Contains('q'))
+            {
+                return NotFound();
+            }
+
+            var stringId = id.Split('q');
+
+            List<int?> idList = stringId.Take(stringId.Length-1).Select(x => (int?)int.Parse(x) ).ToList();
+
+            if (idList == null)
+            {
+                return NotFound();
+            }
+
+            var awarieGm3 = from m in _context.AwarieGm3s
+                            select m;
+
+            var list = new List<AwarieGm3>();
+
+            foreach (var item in idList)
+            {
+                AwarieGm3 Model = new AwarieGm3();
+                Model = awarieGm3
+                    .FirstOrDefault(m => m.Id == item.Value);
+                list.Add(Model);
+            }
+
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
         }
 
 

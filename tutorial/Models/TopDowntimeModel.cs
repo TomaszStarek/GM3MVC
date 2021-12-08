@@ -10,9 +10,10 @@ namespace tutorial.Models
     {
         public string Sekcja { get; set; }
         public string Stacja { get; set; }
-        public string Tag{ get; set; }
-        public int Count { get; set; }
+        public string Opis{ get; set; }
+        public int LiczbaWystapien { get; set; }
         public int TotalMinutes { get; set; }
+        public List<int> Ids { get; set; }
 
     }
 }

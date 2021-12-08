@@ -25,13 +25,13 @@
                 @Html.DisplayNameFor(model => model.Stacja)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tag)
+                @Html.DisplayNameFor(model => model.Opis)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalMinutes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Count)
+                @Html.DisplayNameFor(model => model.LiczbaWystapien)
             </th>
 
             <th></th>
@@ -48,17 +48,33 @@
                 @Html.DisplayFor(modelItem => item.Stacja)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Tag)
+                @Html.DisplayFor(modelItem => item.Opis)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalMinutes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Count)
+                @Html.DisplayFor(modelItem => item.LiczbaWystapien)
             </td>
+            <td>
+                @*<a asp-action="DetailsTops" data-bind="@item.Ids.ToList()" asp-route-id="@item.Ids.ToList()">Details</a>*@
+            </td>
+            <td>
+            @{
+                string buf = "";
+                foreach (var hui in item.Ids)
+                {
+                    buf += hui + "q";
 
+
+                }
+                var url = "/AwarieGM3/DetailsTops/" + buf;
+                <a href="@url">Details</a>
+            }
+            </td>
         </tr>
         }
 
-    </tbody>
+
+        </tbody>
 </table>
