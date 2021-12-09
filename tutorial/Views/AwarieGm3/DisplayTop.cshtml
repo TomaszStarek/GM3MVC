@@ -9,7 +9,7 @@
     <form asp-controller="AwarieGM3" asp-action="DisplayTop" asp-route-id="search">
         Od: <input name="start" new { class="datefield" , type="date" } />
         Do: <input name="stop" new { class="datefield" , type="date" }" />
-        Sekcja: <input id="asp" name="asp" new { class="button" , type="text" }" />
+        Sekcja: <input id="sekcja" name="sekcja" new { class="button" , type="text" }" />
         <input type="submit" value="Filter" />
     </form>
 </div>
@@ -62,10 +62,9 @@
             <td>
             @{
                 string buf = "";
-                foreach (var hui in item.Ids)
+                foreach (var i in item.Ids)
                 {
-                    buf += hui + "q";
-
+                    buf += i + "q";
 
                 }
                 var url = "/AwarieGM3/DetailsTops/" + buf;

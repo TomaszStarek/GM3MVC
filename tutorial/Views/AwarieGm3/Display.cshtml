@@ -10,7 +10,7 @@
     <form asp-controller="AwarieGM3" asp-action="Display" asp-route-id="search">
         Od: <input name="start" new { class="datefield" , type="date" } />
         Do: <input name="stop" new { class="datefield" , type="date" }" />
-        Sekcja: <input id="asp" name="asp" new { class="button" , type="text" }" />
+        Sekcja: <input id="sekcja" name="sekcja" new { class="button" , type="text" }" />
         <input type="submit" value="Filter" />
     </form>
 </div>
@@ -71,7 +71,7 @@
                     @Html.DisplayFor(modelItem => item.CzasStop)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
                 </td>
             </tr>
         }

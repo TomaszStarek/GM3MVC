@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tutorial.Data;
+using tutorial.Middleware;
 using tutorial.Models;
+using tutorial.Services;
 
 namespace tutorial
 {
@@ -29,8 +31,10 @@ namespace tutorial
         {
             services.AddDbContext<dbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-            ); 
+            );
 
+            services.AddTransient<IFilteringDataServices, FilteringDataService>();
+            services.AddScoped<ErrorHandlingMiddleware>();
             services.AddControllersWithViews();
         }
 
@@ -47,6 +51,8 @@ namespace tutorial
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

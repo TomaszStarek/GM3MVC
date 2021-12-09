@@ -27,32 +27,31 @@
         });
     </script>
 
-
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <h3 class="text-light flex-grow-1">Aplikacja GM3</h3>
-                
+
                 @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>*@
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav mr-auto">
 
-                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="">BIEŻĄCE AWARIE</a>
-                        
-                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Display" asp-route-id="WSZYSTKIE">WYŚWIETLANIE</a>
-   
-                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="DisplayTop" asp-route-id="WSZYSTKIE">TOP</a>
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Index" asp-route-id="">Awarie bieżącej zmiany</a>
+
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="Display" asp-route-id="WSZYSTKIE">Historia Awarii</a>
+
+                        <a class="navbar-brand text-light h4" asp-area="" asp-controller="AwarieGm3" asp-action="DisplayTop" asp-route-id="WSZYSTKIE">Top Awarii</a>
 
 
                     </ul>
-                        <p class="nav navbar-text text-light">Użytkownik: @User.Identity.Name</p>
+                    <p class="nav navbar-text text-light">Użytkownik: @User.Identity.Name</p>
 
-</div>
+                </div>
             </div>
         </nav>
     </header>

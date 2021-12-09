@@ -7,20 +7,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using tutorial.Exceptions;
 using tutorial.Models;
-
+using tutorial.Services;
 
 namespace tutorial.Controllers
 {
+
     public class AwarieGm3Controller : Controller
     {
 
 
         private readonly dbContext _context;
+        private readonly IFilteringDataServices _filteringServices;
+        private readonly ILogger<AwarieGm3Controller> _logger;
 
-        public AwarieGm3Controller(dbContext context)
+        public AwarieGm3Controller(dbContext context, IFilteringDataServices filteringDataService, ILogger<AwarieGm3Controller> logger)
         {
             _context = context;
+            _filteringServices = filteringDataService;
+            _logger = logger;
         }
 
         // GET: AwarieGm3       
@@ -29,68 +35,20 @@ namespace tutorial.Controllers
             var awarieGm3 = from m in _context.AwarieGm3s
                             select m;
 
-            DateTime now = DateTime.Now;
-            var timeToadd = 0;
-
-            timeToadd = -1 * now.Hour %8 - 2;
-            if (timeToadd <= -8)
-                timeToadd += 8;
+            awarieGm3 = _filteringServices.FilterDataForCurrentDowntime(id, awarieGm3);
 
 
-
-            if (!String.IsNullOrEmpty(id))
-            {
-                awarieGm3 = awarieGm3
-                               .Where(s =>
-                                           s.CzasStart >= DateTime.Now.AddHours(timeToadd)
-                                           || s.CzasStop >= DateTime.Now.AddHours(timeToadd))
-                                .Where(s => s.Sekcja.Contains(id));
-            }
-            else
-            {
-                awarieGm3 = awarieGm3
-                                .Where(s =>
-                                           s.CzasStart >= DateTime.Now.AddHours(timeToadd)
-                                           || s.CzasStop >= DateTime.Now.AddHours(timeToadd));
-
-            }
             return View(await awarieGm3.ToListAsync());
 
         }
 
 
-        public async Task<IActionResult> Display(string id, DateTime start, DateTime stop, string asp)//, DateTime start, DateTime stop
+        public async Task<IActionResult> Display(string id, DateTime start, DateTime stop, string sekcja)//, DateTime start, DateTime stop
         {
             var awarieGm3 =  from m in _context.AwarieGm3s
                             select m;
 
-            if (start.Year < 2021)
-                start = DateTime.Now.AddDays(-1).Date;
-            if (stop.Year < 2021)
-                stop = DateTime.Now.AddDays(0).Date;
-
-            start = start.AddHours(6);
-            stop = stop.AddHours(6);
-
-            if (!String.IsNullOrEmpty(asp) && !id.Contains("WSZYSTKIE") && id.Contains("search"))
-            {
-                awarieGm3 = awarieGm3
-                               .Where(s => s.CzasStart >= start)
-                                .Where(s => s.CzasStart <= stop)
-                                .Where(s => s.Sekcja.Contains(asp));
-            }
-            else if (!String.IsNullOrEmpty(id) && !id.Contains("WSZYSTKIE") && !id.Contains("search"))
-            {
-                awarieGm3 = awarieGm3
-                               .Where(s => s.CzasStart >= start)
-                                .Where(s => s.CzasStart <= stop)
-                                .Where(s => s.Sekcja.Contains(id));
-            }
-            else
-            {
-                awarieGm3 = awarieGm3
-                                .Where(s => s.CzasStart >= start && s.CzasStart <= stop);
-            }
+            awarieGm3 = _filteringServices.FilterData(start, stop, id, sekcja, awarieGm3);
 
             return View(await awarieGm3.ToListAsync());
         }
@@ -100,14 +58,16 @@ namespace tutorial.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                throw new NotFoundException("Downtime not found (id == null)");
+               // return NotFound();
             }
 
             var awarieGm3 = await _context.AwarieGm3s
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (awarieGm3 == null)
             {
-                return NotFound();
+                throw new NotFoundException($"Downtime with id: {id} not found");
+                // return NotFound();
             }
 
             return View(awarieGm3);
@@ -116,9 +76,11 @@ namespace tutorial.Controllers
         // GET: AwarieGm3/Create
         public IActionResult Create()
         {
-            if (!@User.Identity.Name.Contains("2281209"))
+            _logger.LogWarning($"Restaurant CREATE action invoked by: {@User.Identity.Name}");
+
+            if (!@User.Identity.Name.Contains("12281209"))
             {
-                return Unauthorized("Nie masz dostępu");
+                return Unauthorized("Nie masz dostepu");
             }
 
             return View();
@@ -136,6 +98,7 @@ namespace tutorial.Controllers
                 awarieGm3.Komentarz += "###Stworzono przez: " + User.Identity.Name;
                 _context.Add(awarieGm3);               
                 await _context.SaveChangesAsync();
+                _logger.LogWarning($"Restaurant with Id:{awarieGm3.Id} is created by: {@User.Identity.Name}");
                 return RedirectToAction(nameof(Index));
             }
             return View(awarieGm3);
@@ -144,6 +107,7 @@ namespace tutorial.Controllers
         // GET: AwarieGm3/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            _logger.LogWarning($"Restaurant with Id: {id} EDIT action invoked by: {@User.Identity.Name}");
             if (id == null)
             {
                 return NotFound();
@@ -174,7 +138,8 @@ namespace tutorial.Controllers
         {
             if (id != awarieGm3.Id)
             {
-                return NotFound();
+                throw new NotFoundException("Id not found (id != awarieGm3.Id)");
+               // return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -189,7 +154,8 @@ namespace tutorial.Controllers
                 {
                     if (!AwarieGm3Exists(awarieGm3.Id))
                     {
-                        return NotFound();
+                        throw new NotFoundException("Id not found (id != awarieGm3.Id)");
+                       // return NotFound();
                     }
                     else
                     {
@@ -206,22 +172,33 @@ namespace tutorial.Controllers
         // GET: AwarieGm3/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            _logger.LogWarning($"Restaurant with Id: {id} DELETE action invoked by: {@User.Identity.Name}");
 
             if (!@User.Identity.Name.Contains("2281209"))
             {
-                return Unauthorized("Nie masz dostępu");  
+                return Unauthorized("Nie masz dostepu");  
             }
 
             if (id == null)
             {
-                return NotFound();
+                throw new NotFoundException("Id not found (id == null");
+               // return NotFound();
             }
 
             var awarieGm3 = await _context.AwarieGm3s
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (awarieGm3 == null)
             {
-                return NotFound();
+                throw new NotFoundException("Downtime not found (db record is null");
+              //  return NotFound();
+            }
+            DateTime? dt = DateTime.Now;
+            TimeSpan? interval = (dt - awarieGm3.CzasStop);
+
+            if (interval.Value.TotalHours > 24)
+            {
+                throw new NotFoundException("Nie możesz usuwać awarii, która była powyżej 24h temu!");
+               // return NotFound("Nie możesz usuwać awarii, która była powyżej 24h temu!");
             }
 
             return View(awarieGm3);
@@ -259,81 +236,14 @@ namespace tutorial.Controllers
 
 
         //  [ChildActionOnly]
-        public async Task<IActionResult> DisplayTop(string id, DateTime start, DateTime stop, string asp)//, DateTime start, DateTime stop
+        public async Task<IActionResult> DisplayTop(string id, DateTime start, DateTime stop, string sekcja)//, DateTime start, DateTime stop
         {
             var awarieGm3 = from m in _context.AwarieGm3s
                             select m;
 
-            if (start.Year < 2021)
-                start = DateTime.Now.AddDays(-1).Date;
-            if (stop.Year < 2021)
-                stop = DateTime.Now.AddDays(0).Date;
+            awarieGm3 = _filteringServices.FilterData(start, stop, id, sekcja, awarieGm3);
 
-            start = start.AddHours(6);
-            stop = stop.AddHours(6);
-            if (!String.IsNullOrEmpty(asp) && !id.Contains("WSZYSTKIE") && id.Contains("search"))
-            {
-                awarieGm3 = awarieGm3
-                               .Where(s => s.CzasStart >= start)
-                                .Where(s => s.CzasStart <= stop)
-                                .Where(s => s.Sekcja.Contains(asp));
-            }
-            else if (!String.IsNullOrEmpty(id) && !id.Contains("WSZYSTKIE") && !id.Contains("search"))
-            {
-                awarieGm3 = awarieGm3
-                               .Where(s => s.CzasStart >= start)
-                                .Where(s => s.CzasStart <= stop)
-                                .Where(s => s.Sekcja.Contains(id));
-            }
-            else
-            {
-                awarieGm3 = awarieGm3
-                                .Where(s => s.CzasStart >= start && s.CzasStart <= stop);
-            }
-
-            var totalMinutesModel = new List<TopDowntimeModel>();
-
-            var queryByOccurence =
-                from query in awarieGm3.AsEnumerable()//_context.AwarieGm3s.AsEnumerable()
-                                                      //   where cust.Sekcja.ToUpper().Contains("M0")
-                group query by new
-                {
-                    query.Sekcja,
-                    query.Stacja,
-                    query.Opis,
-                } into g
-                let list = g.ToList()
-                select new
-                {
-                    Ids = list.Select(x => x.Id).ToList(),
-                    Sekcja = g.Key.Sekcja,
-                    Stacja = g.Key.Stacja,
-                    Tag = g.Key.Opis,
-                    Count = list.Count,
-                    TotalMinutes = list.Select(x =>
-                    {
-
-                        var minuty = 0;
-                        if (Int32.TryParse(x.Min, out minuty))
-                            return minuty;
-                        else
-                            return 0;
-                    }).Sum()
-                };
-
-            
-            foreach (var item in queryByOccurence)
-            {
-                TopDowntimeModel Model = new TopDowntimeModel();
-                Model.Ids = item.Ids.ToList();
-                Model.Sekcja = item.Sekcja;
-                Model.Stacja = item.Stacja;
-                Model.Opis = item.Tag;
-                Model.TotalMinutes = item.TotalMinutes;
-                Model.LiczbaWystapien = item.Count;
-
-                totalMinutesModel.Add(Model);
-            }
+            var totalMinutesModel = _filteringServices.FilterToTopDowntime(awarieGm3);
 
             return View(totalMinutesModel);
             // return View(await awarieGm3.ToListAsync());
@@ -343,7 +253,8 @@ namespace tutorial.Controllers
         {
             if (id == null || !id.Contains('q'))
             {
-                return NotFound();
+                throw new NotFoundException("Id is null or no separator 'q' in request");
+              //  return NotFound();
             }
 
             var stringId = id.Split('q');
@@ -352,7 +263,8 @@ namespace tutorial.Controllers
 
             if (idList == null)
             {
-                return NotFound();
+                throw new NotFoundException("No Ids found");
+                //return NotFound();
             }
 
             var awarieGm3 = from m in _context.AwarieGm3s
@@ -371,7 +283,8 @@ namespace tutorial.Controllers
 
             if (list == null)
             {
-                return NotFound();
+                throw new NotFoundException("No valid downtimes found");
+              //  return NotFound();
             }
 
             return View(list);

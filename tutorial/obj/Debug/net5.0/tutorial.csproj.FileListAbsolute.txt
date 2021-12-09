@@ -1340,3 +1340,14 @@ C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\AspNet.ScriptManager.jQuery.UI.Combined.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\DisplayTop.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\DetailsTops.cshtml.g.cs
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\nlog.config
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.Extensions.Logging.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.Web.AspNetCore.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Mvc.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Razor.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Helpers.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.WebPages.Deployment.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.WebPages.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
