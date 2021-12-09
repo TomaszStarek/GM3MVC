@@ -8,7 +8,6 @@ using tutorial.Exceptions;
 
 namespace tutorial.Middleware
 {
-    [HandleError]
     public class ErrorHandlingMiddleware : IMiddleware
     {
         private readonly ILogger<ErrorHandlingMiddleware> _logger;
@@ -25,15 +24,24 @@ namespace tutorial.Middleware
             }
             catch(NotFoundException notFoundExceptions)
             {
+                context.Response.StatusCode = 404;
+                // await context.Response.WriteAsync(notFoundExceptions.Message);
+                context.Response.Redirect("/Error/NotFounded");
+            }
+            catch (UnauthorizedException unauthorizedException)
+            {
                 context.Response.StatusCode = 401;
-                await context.Response.WriteAsync(notFoundExceptions.Message);
+                //  await context.Response.WriteAsync(unauthorizedException.Message);
+                context.Response.Redirect("/Error/Unauthorize");
             }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
 
                 context.Response.StatusCode = 500;
-                await context.Response.WriteAsync("Something went wrong");
+               // await context.Response.WriteAsync("Something went wrong");
+                context.Response.Redirect("/Error");
+
             }
         }
     }

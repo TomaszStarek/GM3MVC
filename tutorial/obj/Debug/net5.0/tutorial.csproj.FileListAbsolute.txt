@@ -1323,7 +1323,6 @@ C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\Details.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\Edit.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\AwarieGm3\Index.cshtml.g.cs
-C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
@@ -1344,6 +1343,7 @@ C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.Extensions.Logging.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\NLog.Web.AspNetCore.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\web.config
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Mvc.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Razor.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.Helpers.dll
@@ -1351,3 +1351,6 @@ C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.WebPages.Razor.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\System.Web.WebPages.dll
 C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\bin\Debug\net5.0\Microsoft.Web.Infrastructure.dll
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Error\ErrorDefault.cshtml.g.cs
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Error\NotFounded.cshtml.g.cs
+C:\Users\2281209\source\repos\tutorial - nowa odsłona\tutorial\obj\Debug\net5.0\Razor\Views\Error\Unauthorize.cshtml.g.cs

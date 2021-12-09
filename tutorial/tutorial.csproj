@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="image\mlody.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNet.ScriptManager.jQuery.UI.Combined" Version="1.12.1" />
     <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.49" />
     <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.49" />
@@ -28,6 +32,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="image\" />
   </ItemGroup>
 
 </Project>

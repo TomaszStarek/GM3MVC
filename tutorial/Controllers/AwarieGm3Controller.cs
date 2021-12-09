@@ -29,7 +29,7 @@ namespace tutorial.Controllers
             _logger = logger;
         }
 
-        // GET: AwarieGm3       
+        // GET: AwarieGm3            
         public async Task<IActionResult> Index(string id)
         {
             var awarieGm3 = from m in _context.AwarieGm3s
@@ -37,11 +37,8 @@ namespace tutorial.Controllers
 
             awarieGm3 = _filteringServices.FilterDataForCurrentDowntime(id, awarieGm3);
 
-
             return View(await awarieGm3.ToListAsync());
-
         }
-
 
         public async Task<IActionResult> Display(string id, DateTime start, DateTime stop, string sekcja)//, DateTime start, DateTime stop
         {
@@ -59,7 +56,6 @@ namespace tutorial.Controllers
             if (id == null)
             {
                 throw new NotFoundException("Downtime not found (id == null)");
-               // return NotFound();
             }
 
             var awarieGm3 = await _context.AwarieGm3s
@@ -67,7 +63,6 @@ namespace tutorial.Controllers
             if (awarieGm3 == null)
             {
                 throw new NotFoundException($"Downtime with id: {id} not found");
-                // return NotFound();
             }
 
             return View(awarieGm3);
@@ -80,7 +75,7 @@ namespace tutorial.Controllers
 
             if (!@User.Identity.Name.Contains("12281209"))
             {
-                return Unauthorized("Nie masz dostepu");
+                throw new UnauthorizedException($"{@User.Identity.Name}Nie masz dostepu do tworzenia nowych awarii!");
             }
 
             return View();
@@ -139,7 +134,6 @@ namespace tutorial.Controllers
             if (id != awarieGm3.Id)
             {
                 throw new NotFoundException("Id not found (id != awarieGm3.Id)");
-               // return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -155,7 +149,6 @@ namespace tutorial.Controllers
                     if (!AwarieGm3Exists(awarieGm3.Id))
                     {
                         throw new NotFoundException("Id not found (id != awarieGm3.Id)");
-                       // return NotFound();
                     }
                     else
                     {
@@ -174,15 +167,14 @@ namespace tutorial.Controllers
         {
             _logger.LogWarning($"Restaurant with Id: {id} DELETE action invoked by: {@User.Identity.Name}");
 
-            if (!@User.Identity.Name.Contains("2281209"))
-            {
-                return Unauthorized("Nie masz dostepu");  
+            if (!@User.Identity.Name.Contains("12281209"))
+            {               
+                throw new UnauthorizedException($"{@User.Identity.Name}Nie masz dostepu do usuwania awarii!");
             }
 
             if (id == null)
             {
                 throw new NotFoundException("Id not found (id == null");
-               // return NotFound();
             }
 
             var awarieGm3 = await _context.AwarieGm3s
@@ -190,7 +182,6 @@ namespace tutorial.Controllers
             if (awarieGm3 == null)
             {
                 throw new NotFoundException("Downtime not found (db record is null");
-              //  return NotFound();
             }
             DateTime? dt = DateTime.Now;
             TimeSpan? interval = (dt - awarieGm3.CzasStop);
@@ -198,7 +189,6 @@ namespace tutorial.Controllers
             if (interval.Value.TotalHours > 24)
             {
                 throw new NotFoundException("Nie możesz usuwać awarii, która była powyżej 24h temu!");
-               // return NotFound("Nie możesz usuwać awarii, która była powyżej 24h temu!");
             }
 
             return View(awarieGm3);
@@ -254,7 +244,6 @@ namespace tutorial.Controllers
             if (id == null || !id.Contains('q'))
             {
                 throw new NotFoundException("Id is null or no separator 'q' in request");
-              //  return NotFound();
             }
 
             var stringId = id.Split('q');
@@ -264,7 +253,6 @@ namespace tutorial.Controllers
             if (idList == null)
             {
                 throw new NotFoundException("No Ids found");
-                //return NotFound();
             }
 
             var awarieGm3 = from m in _context.AwarieGm3s
@@ -284,7 +272,6 @@ namespace tutorial.Controllers
             if (list == null)
             {
                 throw new NotFoundException("No valid downtimes found");
-              //  return NotFound();
             }
 
             return View(list);
@@ -292,4 +279,5 @@ namespace tutorial.Controllers
 
 
     }
+
 }

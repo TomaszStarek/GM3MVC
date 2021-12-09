@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace tutorial.Exceptions
 {
-    public class NotFoundException : Exception
+    public class UnauthorizedException : Exception
     {
-        public NotFoundException(string message) : base(message)
+        public UnauthorizedException(string message) : base(message)
         {
 
         }
